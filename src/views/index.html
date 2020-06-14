@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rasa chat bot</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div>
+        <audio id="audio" type="audio/mpeg" onended="songEnded()"></audio>
+    </div>
+    <section class="chat-section">
+        <div class="brand">
+            <img height="40" src="static/wassup.png" alt="">
+            <h1>Rasa chat bot</h1>
+        </div>
+        <div id="message-area"></div>
+        <div>
+            <textarea id="textarea" cols="30" rows="1" placeholder="Write a message..."></textarea>
+        </div>
+    </section>
+
+    <script src="socket.io/socket.io.js"></script>
+    <script src="js/client.js"></script>
+</body>
+</html>
