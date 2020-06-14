@@ -8,26 +8,35 @@ Tạo một chat bot có tác dụng bật nhạc theo yêu cầu của người
 Clone project:
 Mở foler src: 
 > cd src
+
 Cài đặt package của Nodejs: 
 > npm install
+
 Mở folder rasa: 
 > cd rasa
+
 Tạo virtualenv: 
 > virtualenv .env
+
 Bật virtualenv: 
 > .env\Scripts\activate
+
 Cài đặt rasa: 
 > pip install rasa
+
 ## Hướng dẫn sử dụng
 Bật server:
 > nodemon app.js
+
 Bật rasa api server
 > cd rasa
 > .env\Scripts\activate
 > rasa run  --enable-api
+
 Bật rasa action server
 > cd rasa
 > .env\Scripts\activate
 > rasa run actions --actions actions --v
+
 ## Demo video
 
