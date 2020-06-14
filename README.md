@@ -30,12 +30,16 @@ Bật server:
 
 Bật rasa api server
 > cd rasa
+
 > .env\Scripts\activate
+
 > rasa run  --enable-api
 
 Bật rasa action server
 > cd rasa
+
 > .env\Scripts\activate
+
 > rasa run actions --actions actions --v
 
 ## Demo video
