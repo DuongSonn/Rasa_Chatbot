@@ -39,38 +39,47 @@ io.on('connection', (socket) => {
             json: {
                 "text": msg.message
             }
-        }, (error, res, body) => {
+        }, async (error, res, body) => {
             if (error) {
               throw error;
             }
             console.log(body.entities);
             if (body.intent.name == "user_song") {
-                songName = body.entities[0].value.toString();
+                if (msg.audio) {
+                    socket.emit('message', {user: "Bot", message: "Sorry, there is a song playing, i can't play another song"});
+                } else {
+                    songName = body.entities[0].value.toString();
 
-                socket.emit('message', {user: "Bot", message: "I am preparing your song. Please wait :)"});
-    
-                let id = null;
-    
-                ytsr(songName, options, function(err, searchResult) {
-                    if (err) throw err;
-                    id = searchResult.items[0].link.replace("https://www.youtube.com/watch?v=", "").toString();
-    
-                    console.log(id);
-                    let stream = ytdl(id, {
-                    quality: 'highestaudio',
+                    socket.emit('message', {user: "Bot", message: "I am preparing your song. Please wait :)"});
+        
+                    let id = null;
+        
+                    ytsr(songName, options, function(err, searchResult) {
+                        if (err) throw err;
+                        console.log(searchResult);
+                        if (searchResult.items.length > 0) {
+                            id = searchResult.items[0].link.replace("https://www.youtube.com/watch?v=", "").toString();
+        
+                            console.log(id);
+                            let stream = ytdl(id, {
+                                quality: 'highestaudio',
+                            });
+            
+                            ffmpeg(stream)
+                            .audioBitrate(128)
+                            .save(`${__dirname}/public/music/song.mp3`)
+                            .on('progress', p => {
+                                readline.cursorTo(process.stdout, 0);
+                                process.stdout.write(`${p.targetSize}kb downloaded`);
+                            })
+                            .on('end', () => {
+                                socket.emit('message', {user: "Bot", message: "Your song is ready. Enjoy!"});
+                            });
+                        } else {
+                            socket.emit('message', {user: "Bot", message: "Sorry I can't find your song :("});
+                        }
                     });
-    
-                    ffmpeg(stream)
-                    .audioBitrate(128)
-                    .save(`${__dirname}/public/music/song.mp3`)
-                    .on('progress', p => {
-                        readline.cursorTo(process.stdout, 0);
-                        process.stdout.write(`${p.targetSize}kb downloaded`);
-                    })
-                    .on('end', () => {
-                        socket.emit('message', {user: "Bot", message: "Your song is ready. Enjoy!"});
-                    });
-                });
+                }
             }
             else {
                 request.post(uri_rasa, {

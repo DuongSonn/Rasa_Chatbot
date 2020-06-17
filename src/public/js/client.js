@@ -11,14 +11,20 @@ while(!name) {
 
 textarea.addEventListener('keyup', (e) => {
     if(e.key === 'Enter') {
-        sendMessage(e.target.value);
+        if (audio.currentTime && !audio.paused) {
+            audioStatus = true;
+        } else {
+            audioStatus = false;
+        }
+        sendMessage(e.target.value, audioStatus);
     }
 })
 
-function sendMessage(message) {
+function sendMessage(message, audioStatus) {
     let msg = {
         user: name,
-        message: message.trim()
+        message: message.trim(),
+        audio: audioStatus,
     };
     // Append 
     appendMessage(msg, 'outgoing');
