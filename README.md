@@ -6,6 +6,8 @@ Tạo một chat bot có tác dụng bật nhạc theo yêu cầu của người
 * Tạo website sửa dụng: ExpressJS, Javascript, Html, CSS, SocketIO
 ## Hướng dẫn cài đặt
 Clone project:
+>git clone https://github.com/DuongSonn/Rasa_Chatbot.git
+
 Mở foler src: 
 > cd src
 
