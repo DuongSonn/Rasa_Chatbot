@@ -16,7 +16,7 @@ responses:
   - text: "Hey! How are you feeling today?"
 
   utter_cheer_up:
-  - text: "Sory to hear that. I will find a song that suit your mood :("
+  - text: "Sorry to hear that. I will find a song that suit your mood :("
 
   utter_did_that_help:
   - text: "Did that help you?"
@@ -35,6 +35,9 @@ responses:
   
   utter_play_again:
   - text: "Do you want to hear the song again?"
+  
+  utter_glad_to_help:
+  - text: "Glad that the song cheer you up :)"
   
 actions:
   - get_user_song
