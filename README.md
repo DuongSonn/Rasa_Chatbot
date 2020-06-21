@@ -45,5 +45,5 @@ Bật rasa action server
 > rasa run actions --actions actions --v
 
 ## Demo video
-![Demo Video](/media/RasaChatbot.mp4)
+[Demo Video](/media/RasaChatbot.mp4)
 
