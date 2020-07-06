@@ -4,6 +4,7 @@ let name;
 let textarea = document.getElementById('textarea');
 let messageArea = document.getElementById('message-area');
 let music = document.getElementById('music');
+let audio = document.getElementById('song');
 
 while(!name) {
     name = prompt('Please enter your name: ');
@@ -12,7 +13,11 @@ while(!name) {
 textarea.addEventListener('keyup', (e) => {
     if(e.key === 'Enter') {
         if (music.hasChildNodes()) {
-            audioStatus = true;
+            if (audio.currentTime && !audio.paused) {
+                audioStatus = true;
+            } else {
+                audioStatus = false;
+            }
         } else {
             audioStatus = false;
         }
@@ -74,7 +79,7 @@ socket.on('message', (msg) => {
         appendMessage(msg, 'incoming');
         scrollToBottom();
     } else if (msg.message == "-again") {
-        document.getElementById("song").play();
+        audio.play();
     } else {
         appendMessage(msg, 'incoming');
         scrollToBottom();
@@ -86,11 +91,9 @@ function scrollToBottom() {
 }
 
 function songEnded() {
-    music.innerHTML = '';
-
     let msg = {
         user: name,
-        message: "Done playing"
+        message: "Done playing",
     };
 
     socket.emit('message', msg);

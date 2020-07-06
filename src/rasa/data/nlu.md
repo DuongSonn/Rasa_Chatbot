@@ -92,6 +92,7 @@
 - Can you play [Start of something new HSM](song_name)
 - Can you play [Now or never HSM](song_name)
 - I want to listen to [24H lyly](song_name)
+- Play [See you again](song_name)
 
 ## intent:play_again
 - Play again

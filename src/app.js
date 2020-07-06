@@ -93,47 +93,55 @@ io.on('connection', (socket) => {
                     }
 
                     if (body[0].text == "Sorry to hear that. I will find a song that suit your mood :(") {
-                        songName = "bad day"
+                        if (msg.audio) {
+                            socket.emit('message', {user: "Bot", message: "Sorry, there is a song playing, i can't play another song"});
+                        } else {
+                            songName = "bad day"
 
-                        socket.emit('message', {user: "Bot", message: "I am preparing your song. Please wait :("});
-                        
-                        console.log(process.env.GOOGLE_API_KEY);
-                        var params = {part: 'snippet', q: songName, type: 'video', key :process.env.GOOGLE_API_KEY};
-                        request({url:uri_youtube_search, qs:params}, function(err, response, body) {
-                            if (err) throw err;
+                            socket.emit('message', {user: "Bot", message: "I am preparing your song. Please wait :("});
                             
-                            let jsonBody = JSON.parse(body);
+                            console.log(process.env.GOOGLE_API_KEY);
+                            var params = {part: 'snippet', q: songName, type: 'video', key :process.env.GOOGLE_API_KEY};
+                            request({url:uri_youtube_search, qs:params}, function(err, response, body) {
+                                if (err) throw err;
+                                
+                                let jsonBody = JSON.parse(body);
 
-                            console.log("Get body: " + JSON.parse(body).items);
-                            if (jsonBody.items.length > 0) {
-                                id = jsonBody.items[0].id.videoId.toString();
-                                console.log(id);
-                                downloadMusic(id, socket);
-                            } else {
-                                socket.emit('message', {user: "Bot", message: "Sorry I can't find your song :("});
-                            }
-                        });
+                                console.log("Get body: " + JSON.parse(body).items);
+                                if (jsonBody.items.length > 0) {
+                                    id = jsonBody.items[0].id.videoId.toString();
+                                    console.log(id);
+                                    downloadMusic(id, socket);
+                                } else {
+                                    socket.emit('message', {user: "Bot", message: "Sorry I can't find your song :("});
+                                }
+                            });
+                        }
                     } else if (body[0].text == "Glad to hear that. Hope you like this song :)") {
-                        songName = "happy"
+                        if (msg.audio) {
+                            socket.emit('message', {user: "Bot", message: "Sorry, there is a song playing, i can't play another song"});
+                        } else {
+                            songName = "happy"
 
-                        socket.emit('message', {user: "Bot", message: "I am preparing your song. Please wait :)"});
-                        
-                        console.log(process.env.GOOGLE_API_KEY);
-                        var params = {part: 'snippet', q: songName, type: 'video', key :process.env.GOOGLE_API_KEY};
-                        request({url:uri_youtube_search, qs:params}, function(err, response, body) {
-                            if (err) throw err;
+                            socket.emit('message', {user: "Bot", message: "I am preparing your song. Please wait :)"});
                             
-                            let jsonBody = JSON.parse(body);
+                            console.log(process.env.GOOGLE_API_KEY);
+                            var params = {part: 'snippet', q: songName, type: 'video', key :process.env.GOOGLE_API_KEY};
+                            request({url:uri_youtube_search, qs:params}, function(err, response, body) {
+                                if (err) throw err;
+                                
+                                let jsonBody = JSON.parse(body);
 
-                            console.log("Get body: " + JSON.parse(body).items);
-                            if (jsonBody.items.length > 0) {
-                                id = jsonBody.items[0].id.videoId.toString();
-                                console.log(id);
-                                downloadMusic(id, socket);
-                            } else {
-                                socket.emit('message', {user: "Bot", message: "Sorry I can't find your song :("});
-                            }
-                        });
+                                console.log("Get body: " + JSON.parse(body).items);
+                                if (jsonBody.items.length > 0) {
+                                    id = jsonBody.items[0].id.videoId.toString();
+                                    console.log(id);
+                                    downloadMusic(id, socket);
+                                } else {
+                                    socket.emit('message', {user: "Bot", message: "Sorry I can't find your song :("});
+                                }
+                            });
+                        }
                     }
                 })
             }
@@ -143,12 +151,12 @@ io.on('connection', (socket) => {
 
 function downloadMusic(id, socket) {
     if (id != null) {
-        try {
-            fs.unlinkSync(`${__dirname}/public/music/song.mp3`);
-            //file removed
-        } catch(err) {
-            console.error(err);
-        }
+        // try {
+        //     fs.unlinkSync(`${__dirname}/public/music/song.mp3`);
+        //     //file removed
+        // } catch(err) {
+        //     console.error(err);
+        // }
 
         let stream = ytdl(id, {
             quality: 'highestaudio',
