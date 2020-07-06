@@ -3,7 +3,7 @@ const socket = io();
 let name;
 let textarea = document.getElementById('textarea');
 let messageArea = document.getElementById('message-area');
-let audio = document.getElementById('audio');
+let music = document.getElementById('music');
 
 while(!name) {
     name = prompt('Please enter your name: ');
@@ -11,7 +11,7 @@ while(!name) {
 
 textarea.addEventListener('keyup', (e) => {
     if(e.key === 'Enter') {
-        if (audio.currentTime && !audio.paused) {
+        if (music.hasChildNodes()) {
             audioStatus = true;
         } else {
             audioStatus = false;
@@ -51,18 +51,31 @@ function appendMessage(msg, type) {
 // Recieve messages 
 socket.on('message', (msg) => {
     if (msg.message == "Your song is ready. Enjoy!") {
-        if (audio.src) {
-            audio.src = "";
-            audio.src = "music/song.mp3";
-            audio.load();
+        if (music.hasChildNodes()) {
+            music.innerHTML = '';
+            var audio = document.createElement("audio");
+            audio.setAttribute("src", "music/song.mp3");
+            audio.setAttribute("type", "audio/mpeg");
+            audio.setAttribute("onended", "songEnded()");
+            music.appendChild(audio);
             audio.play();
         } else {
-            audio.src = "music/song.mp3";
+            var audio = document.createElement("audio");
+            audio.setAttribute("src", "music/song.mp3");
+            audio.setAttribute("type", "audio/mpeg");
+            audio.setAttribute("onended", "songEnded()");
+            music.appendChild(audio);
             audio.play();
         }
         appendMessage(msg, 'incoming');
         scrollToBottom();
     } else if (msg.message == "-again") {
+        music.innerHTML = '';
+        var audio = document.createElement("audio");
+        audio.setAttribute("src", "music/song.mp3");
+        audio.setAttribute("type", "audio/mpeg");
+        audio.setAttribute("onended", "songEnded()");
+        music.appendChild(audio);
         audio.play();
     } else {
         appendMessage(msg, 'incoming');
@@ -75,6 +88,8 @@ function scrollToBottom() {
 }
 
 function songEnded() {
+    music.innerHTML = '';
+
     let msg = {
         user: name,
         message: "Done playing"
