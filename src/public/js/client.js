@@ -52,16 +52,20 @@ function appendMessage(msg, type) {
 socket.on('message', (msg) => {
     if (msg.message == "Your song is ready. Enjoy!") {
         if (music.hasChildNodes()) {
+            id = "music/"+ msg.id +".mp3";
             music.innerHTML = '';
             var audio = document.createElement("audio");
-            audio.setAttribute("src", "music/song.mp3");
+            audio.setAttribute("id", "song");
+            audio.setAttribute("src", id);
             audio.setAttribute("type", "audio/mpeg");
             audio.setAttribute("onended", "songEnded()");
             music.appendChild(audio);
             audio.play();
         } else {
+            id = "music/"+ msg.id +".mp3";
             var audio = document.createElement("audio");
-            audio.setAttribute("src", "music/song.mp3");
+            audio.setAttribute("id", "song");
+            audio.setAttribute("src", id);
             audio.setAttribute("type", "audio/mpeg");
             audio.setAttribute("onended", "songEnded()");
             music.appendChild(audio);
@@ -70,13 +74,7 @@ socket.on('message', (msg) => {
         appendMessage(msg, 'incoming');
         scrollToBottom();
     } else if (msg.message == "-again") {
-        music.innerHTML = '';
-        var audio = document.createElement("audio");
-        audio.setAttribute("src", "music/song.mp3");
-        audio.setAttribute("type", "audio/mpeg");
-        audio.setAttribute("onended", "songEnded()");
-        music.appendChild(audio);
-        audio.play();
+        document.getElementById("song").play();
     } else {
         appendMessage(msg, 'incoming');
         scrollToBottom();

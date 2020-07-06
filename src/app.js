@@ -156,13 +156,13 @@ function downloadMusic(id, socket) {
 
         ffmpeg(stream)
         .audioBitrate(128)
-        .save(`${__dirname}/public/music/song.mp3`)
+        .save(`${__dirname}/public/music/`+ id +`.mp3`)
         .on('progress', p => {
             readline.cursorTo(process.stdout, 0);
             process.stdout.write(`${p.targetSize}kb downloaded`);
         })
         .on('end', () => {
-            socket.emit('message', {user: "Bot", message: "Your song is ready. Enjoy!"});
+            socket.emit('message', {user: "Bot", message: "Your song is ready. Enjoy!", id: id});
         });
     }
 }
